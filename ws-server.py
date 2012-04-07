@@ -25,10 +25,11 @@ def handle_ws_request(soc):
 #   print reply
 
     soc.send(reply)
-    while 1:
+    stuff = True
+    while stuff:
         stuff = soc.recv(4096)          # a larger buffer to hold whatever stuff coming
         soc.send(stuff)                 # echo back
-#   soc.close()
+    soc.close()
 
 
 
