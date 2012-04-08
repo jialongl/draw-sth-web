@@ -3,40 +3,9 @@
 import socket, threading, re
 import hashlib, base64
 import sys, getopt
-import struct
+from util import *
 
-debug = True
 websocket_port = 8005
-
-def log (stuff):
-    global debug
-    if debug:
-        print stuff
-
-def encode_hybi(buf, opcode, base64=False):
-    """ Encode a HyBi style websocket frame.
-    Opcode:
-        0x0 - continuation
-        0x1 - text frame (base64 encode buf)
-        0x2 - binary frame (use raw buf)
-        0x8 - connection close
-        0x9 - ping
-        0xA - pong
-    """
-    if base64:
-        buf = b64encode(buf)
-
-    b1 = 0x80 | (opcode & 0x0f) # FIN + opcode
-    payload_len = len(buf)
-    if payload_len <= 125:
-        header = struct.pack('>BB', b1, payload_len)
-    elif payload_len > 125 and payload_len < 65536:
-        header = struct.pack('>BBH', b1, 126, payload_len)
-    elif payload_len >= 65536:
-        header = struct.pack('>BBQ', b1, 127, payload_len)
-
-    log("Encoded: %s" % repr(header + buf))
-    return header + buf, len(header), 0
 
 # The client sends a Sec-WebSocket-Key which is base64 encoded. To form a response, the magic string
 # "258EAFA5-E914-47DA-95CA-C5AB0DC85B11" is appended to this (undecoded) key, and the resulting string is then
@@ -61,16 +30,35 @@ def reply_ws_request (sock, addr):
     log("Done handshaking.")
 
 
-def start_guessing_game (drawer_sock, guesser_sock):
-    le_answer = drawer_sock.recv(64)
-    msg,_,_ = encode_hybi("set the word liaw.", 0x1)
-    guesser_sock.send(msg)
+# send whatever stuff drawer_sock received to guesser_sock
+def drawer_thread (drawer_sock, guesser_sock):
+    b = True
+    while b:
+        data = drawer_sock.recv(4096)
+        try:
+            guesser_sock.send(data)
+        except:
+            b = False
+    drawer_sock.close()
 
-    # send whatever stuff drawer_sock received to guesser_sock
+def guesser_thread (guesser_sock, answer):
     data = True
     while data:
-        data = drawer_sock.recv(4096)
-        guesser_sock.send(data)
+        data = decode_hybi(guesser_sock.recv(4096))['payload']
+        if data == answer:
+            msg = encode_hybi("You got it right!", 0x1)
+            guesser_sock.send(msg)
+            guesser_sock.close()
+            data = False
+
+def start_guessing_game (drawer_sock, guesser_sock):
+    le_answer = decode_hybi(drawer_sock.recv(64))['payload']
+    msg = encode_hybi("set the word liaw.", 0x1)
+    guesser_sock.send(msg)
+
+    threading.Thread(target =  drawer_thread, args = (drawer_sock, guesser_sock)).start()
+    threading.Thread(target = guesser_thread, args = (guesser_sock, le_answer)).start()
+
 
 
 opts, args = getopt.getopt(sys.argv[1:], "l:")
