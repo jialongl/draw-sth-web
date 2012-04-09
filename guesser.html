@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Draw Something - Guesser</title>
+	</head>
+	<body>
+		<div style="width:800px; margin:0 auto;">
+			<input type="text" id="le_word_tf" onkeydown="if (event.keyCode == 13) guess_word();" />
+			<input type="button" value="Guess the word" onclick="guess_word();" />
+			<canvas id="drawing_canvas" width="800" height="600" style="border:1px solid #c3c3c3;"></canvas>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="draw-on-canvas.js"></script>
+	<script type="text/javascript" src="guesser.js"></script>
+</html>
