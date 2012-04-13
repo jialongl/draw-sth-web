@@ -3,7 +3,7 @@
 	<head>
 		<title>Draw Something - Drawer</title>
 	</head>
-	<body>
+	<body onload="init_ws();">
 		<div style="width:800px; margin:0 auto;">
 			<input type="text" id="le_word_tf" onkeydown="if (event.keyCode == 13) set_word();" />
 			<input type="button" value="Set the word" onclick="set_word();" />

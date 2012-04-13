@@ -3,7 +3,7 @@
 	<head>
 		<title>Draw Something - Guesser</title>
 	</head>
-	<body>
+	<body onload="init_ws();">
 		<div style="width:800px; margin:0 auto;">
 			<input type="text" id="le_word_tf" onkeydown="if (event.keyCode == 13) guess_word();" />
 			<input type="button" value="Guess the word" onclick="guess_word();" />
