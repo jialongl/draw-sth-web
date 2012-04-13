@@ -7,12 +7,12 @@ Tested on Linux Google Chrome 18.0.1025.142 (129054), which supports (only?)
 
 <code>
 $ python ws-server.py<br />
-$ google-chrome drawer.html (tab A)<br />
-$ google-chrome guesser.html (tab B)
+$ google-chrome index.html (tab A), click "Draw".<br />
+$ google-chrome index.html (tab B), click "Guess".
 </code>
 
-In tab A: Set the word by typing it and the Enter key; Draw stuff. (But don't draw before you set the answer) <br>
-In tab B: You see the drawing coming out in the canvas; Guess the word by typing it and the Enter key.
+* Drawer: Set the word by typing it and the Enter key; Draw stuff. (But don't draw before you set the answer) <br />
+* Guesser: You see the drawing coming out in the canvas; Guess the word by typing it and the Enter key.
 
 In the whole process, have "DevTools" open, as I implemented the notifications as "console.log()"s.
 
@@ -20,5 +20,5 @@ This is the simplest form it can go.
 
 **Known "Issues":**
 
-* No defensive programmin applied, for better illustration of concept.
+* No defensive programming applied, for better illustration of concept.
 * minimum UI stuff (You must have already noticed -- even notifications are in JS console).
