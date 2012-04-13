@@ -51,4 +51,5 @@ function set_word() {
 	word = document.getElementById('le_word_tf').value;
 	ws.send(word);
 	console.log('drawer set word to: ' + word);
+	canvas.style.display = 'block';
 }
