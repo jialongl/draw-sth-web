@@ -5,11 +5,10 @@ Tested on Linux Google Chrome 18.0.1025.142 (129054), which supports (only?)
 
 **How to run:**
 
-<code>
-$ python ws-server.py<br />
-$ google-chrome index.html (tab A), click "Draw".<br />
+<pre><code>$ python ws-server.py
+$ google-chrome index.html (tab A), click "Draw".
 $ google-chrome index.html (tab B), click "Guess".
-</code>
+</code></pre>
 
 * Drawer: Set the word by typing it and the Enter key; Draw stuff. (But don't draw before you set the answer) <br />
 * Guesser: You see the drawing coming out in the canvas; Guess the word by typing it and the Enter key.
